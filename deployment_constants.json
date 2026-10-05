@@ -1,0 +1,72 @@
+{
+  "model_name": "ECG_CNN_Attention_v7",
+  "classes": [
+    "N",
+    "S",
+    "V",
+    "F",
+    "Q"
+  ],
+  "fs": 360,
+  "beat_pre": 90,
+  "beat_post": 110,
+  "beat_len": 200,
+  "n_leads": 2,
+  "leads": [
+    "MLII",
+    "second lead of the record"
+  ],
+  "preprocessing": "butterworth bandpass 0.5-45 Hz order 3 zero-phase; per-lead z-score per beat",
+  "rr_feature_names": [
+    "prev_rr",
+    "next_rr",
+    "local_rr",
+    "prematurity",
+    "compensatory",
+    "prev_rr/rec_median",
+    "next_rr/rec_median",
+    "prev2_rr/local"
+  ],
+  "rr_clip": {
+    "seconds_0_2": [
+      0.15,
+      3
+    ],
+    "ratios_3_7": [
+      0,
+      4
+    ]
+  },
+  "train_priors": {
+    "N": 0.34,
+    "S": 0.28,
+    "V": 0.19,
+    "F": 0.17,
+    "Q": 0.02
+  },
+  "ds1_real_priors": {
+    "N": 0.8989,
+    "S": 0.0185,
+    "V": 0.0743,
+    "F": 0.0081,
+    "Q": 0.0002
+  },
+  "tau_accuracy": 1.5,
+  "tau_balanced_f1": 0.4,
+  "metrics_ds2_held_out": {
+    "test_beats": 49668,
+    "single_raw_accuracy": 0.8763,
+    "single_raw_macro_f1_nsvf": 0.5172,
+    "single_raw_roc_auc": 0.8761,
+    "single_raw_pr_auc": 0.4457,
+    "ensemble_5fold_raw_accuracy": 0.9013,
+    "ensemble_5fold_raw_macro_f1_nsvf": 0.529,
+    "single_tau_1_5_accuracy": 0.9456,
+    "single_tau_0_4_accuracy": 0.8985,
+    "tflite_int8_size_kb": 155.4,
+    "tflite_dynamic_size_kb": 146,
+    "tflite_latency_ms_per_beat": 0.32,
+    "tflite_vs_keras_argmax_agreement": 0.9982
+  },
+  "usage": "pred = argmax(log(softmax_output) + logit_bias)"
+}

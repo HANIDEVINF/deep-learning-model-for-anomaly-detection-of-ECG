@@ -1,0 +1,6 @@
+# Python 3.11 is recommended; see README for current script limitations.
+numpy>=1.24,<2.0
+scipy>=1.10,<1.14
+scikit-learn>=1.3,<1.6
+wfdb>=4.1,<5
+tensorflow>=2.15,<2.16

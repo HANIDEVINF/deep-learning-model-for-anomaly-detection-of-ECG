@@ -1,15 +1,33 @@
 # AI ECG Arrhythmia Classification (v7) — Hybrid 1D-CNN + Transformer + 8 RR Context
 
-> **Strict Inter-Patient MIT-BIH Evaluation (de Chazal DS1 / DS2) · 97,045 Parameters · 155.4 KB INT8 TFLite (`0.32 ms/beat`, `99.82%` Argmax Fidelity)**
+> **Research report and executed notebook for strict inter-patient MIT-BIH DS1/DS2 evaluation. The reported 97,045-parameter model, TFLite figures and metrics below come from the notebook/report; the standalone Python script is currently only a partial training scaffold.**
 
 ## 📂 Repository Structure
 
-- **[`scripts/train_ecg_arrhythmia_v7.py`](./scripts/train_ecg_arrhythmia_v7.py)** — Complete end-to-end Python pipeline: PhysioNet MIT-BIH download, 0.5–45 Hz zero-phase Butterworth filtering, dual-lead selection by `sig_name` (`MLII` + second lead), beat-only 8 RR feature extraction, 5-fold `StratifiedGroupKFold` by patient ID, DS1-only out-of-fold (OOF) logit adjustment, and TFLite INT8 quantization + fidelity verification.
+- **[`scripts/train_ecg_arrhythmia_v7.py`](./scripts/train_ecg_arrhythmia_v7.py)** — Partial training scaffold: PhysioNet MIT-BIH download, preprocessing, lead selection, beat/RR-feature extraction, model definition and logit-adjustment utility. **The current script ends after preparing DS1/DS2 arrays and does not run model fitting, evaluation, or TFLite export.** Do not use it as a one-command reproduction of the reported metrics yet.
 - **[`notebooks/ECG_Arrhythmia_Classification_v7.ipynb`](./notebooks/ECG_Arrhythmia_Classification_v7.ipynb)** — Executed v7 Colab notebook with full DS1/DS2 benchmark outputs.
 - **[`reports/ECG_Holter_Technical_Report_v7.md`](./reports/ECG_Holter_Technical_Report_v7.md)** — Full v7 Technical Report (layer-by-layer verified architecture, v1→v7 ablation history, confusion matrix analysis, and embedded TFLite verification).
 - **[`reports/ECG_Arrhythmia_State_of_the_Art_MIT_BIH.md`](./reports/ECG_Arrhythmia_State_of_the_Art_MIT_BIH.md)** — State-of-the-Art (SOTA) comparative literature review (2004–2026) and methodological comparison table.
 - **[`deployment_constants.json`](./deployment_constants.json)** — Exported DS1 RR standardization parameters (`mean / std`), class priors, and $\tau$ logit-bias vectors for Raspberry Pi / embedded Holter inference.
 
+## Reproducibility status and environment
+
+The executed notebook and technical report contain the project-reported experiment outputs. The standalone Python script is **not yet a complete reproduction entry point**: it downloads the database, prepares DS1/DS2 arrays, defines preprocessing/model helpers, then stops after printing dataset shapes. It currently has no training loop, evaluation/report generation, or TFLite conversion in its main block.
+
+A compatible starting environment for the script's imports is Python 3.11:
+
+```bash
+python -m venv .venv
+# Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+# macOS/Linux:
+# source .venv/bin/activate
+
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+The script may download PhysioNet's MIT-BIH Arrhythmia Database on first run. Dataset download and full model training can consume substantial disk space, memory and compute; they are not performed by the current script past the array-preparation stage. To inspect the project's existing results, start with the executed notebook and report above. Do not describe the notebook's reported numbers as freshly reproduced until a complete training/evaluation command has been added and run from a clean environment.
 ---
 
 ## 1. Executive Summary & Why Protocol Comes First

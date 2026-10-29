@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI-Based ECG Arrhythmia Classification — End-to-End Pipeline (v7)
+AI-Based ECG Arrhythmia Classification — Partial Training Scaffold (v7)
 Strict Inter-Patient MIT-BIH Evaluation (de Chazal DS1 / DS2)
 Architecture: 1D-CNN + 2x Multi-Head Transformer + 8 Cleaned RR Features (97,045 params)
 """
@@ -266,3 +266,8 @@ if __name__ == "__main__":
     rr_train_full = ((rr_train_full - RR_MEAN) / RR_STD).astype(np.float32)
     rr_test = ((rr_test - RR_MEAN) / RR_STD).astype(np.float32)
     print("DS1 shape:", X_train_full.shape, "DS2 shape:", X_test.shape)
+    print(
+        "NOTE: this script currently stops after dataset preparation. "
+        "It does not fit a model, generate benchmark reports, or export TFLite. "
+        "See README.md and the executed notebook for project-reported results."
+    )
